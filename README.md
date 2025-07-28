@@ -103,7 +103,7 @@ flyway repair
 🧾 Submission Info
 Q1 Answer: Included in the PDF report
 
-Repo Link: GitHub - KeerthanaGarimella/flyway-assignment-4
+Repo Link: GitHub - https://github.com/KeerthanaGarimella/flyway-assignment-4
 
 README: Fulfills the reproducibility and documentation requirements
 
