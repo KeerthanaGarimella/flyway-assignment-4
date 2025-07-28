@@ -52,6 +52,9 @@ jobs:
           tar -xzf flyway-commandline-9.22.3-linux-x64.tar.gz
           sudo ln -s $PWD/flyway-9.22.3/flyway /usr/local/bin/flyway
 
-      - name: Run Flyway migrations
-        run: |
-          flyway -url=jdbc:mysql://127.0.0.1:3306/flyway_test -user=root -password=root -locations=filesystem:./migrations migrate
+      - name: Run migrations
+       run: |
+    docker run --rm -v "${{ github.workspace }}/migrations:/flyway/sql" redgate/flyway \
+      -url=jdbc:mysql://mysql:3306/flyway_test -user=root -password=root \
+      -locations=filesystem:/flyway/sql,filesystem:/flyway/sql/init,filesystem:/flyway/sql/update migrate
+

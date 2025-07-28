@@ -1,0 +1,51 @@
+name: Mysql actions demo
+run-name: ${{ github.actor }} is testing out Mysql GitHub Actions 🚀
+
+on: [push]
+
+jobs:
+  setup_mysql_database:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: flyway_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install MySQL client
+        run: sudo apt-get update && sudo apt-get install -y mysql-client
+
+      - name: Deploy to Database
+        env:
+          DB_HOST: mysql
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: flyway_test
+        run: |
+          echo "Waiting for MySQL to be ready..."
+          sleep 20
+          mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < schema_changes.sql
+
+      - name: pull flyway
+        run: docker pull redgate/flyway
+
+      - name: Run migrations
+        env:
+          DB_HOST: mysql
+          DB_USER: root
+          DB_PASSWORD: root
+        run: |
+          docker run --rm -v "${{ github.workspace }}/migrations:/flyway/sql" redgate/fly
