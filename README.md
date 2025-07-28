@@ -2,11 +2,9 @@
 
 This project demonstrates an automated workflow using **GitHub Actions** to deploy and migrate a **MySQL database schema** using **Flyway**. It automates database initialization and schema versioning as part of a DevOps pipeline.
 
----
 
 ## 📁 Project Structure
 
-.
 ├── .github/workflows/
 │ └── mysql_action.yml # GitHub Actions workflow file
 ├── migrations/
@@ -27,7 +25,6 @@ This project demonstrates an automated workflow using **GitHub Actions** to depl
 - CI pipeline to detect and run migrations on code push
 
 ---
-
 ## ⚙️ How to Reproduce
 
 To run this project:
