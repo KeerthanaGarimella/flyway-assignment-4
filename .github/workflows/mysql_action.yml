@@ -11,7 +11,7 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: Secret5555
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: flyway_test
         ports:
           - 3306:3306
@@ -32,10 +32,11 @@ jobs:
         env:
           DB_HOST: mysql
           DB_USER: root
-          DB_PASSWORD: Secret5555
+          DB_PASSWORD: root
           DB_NAME: flyway_test
         run: |
-          sleep 15  # Wait for MySQL service to be ready
+          echo "Waiting for MySQL to be ready..."
+          sleep 20
           mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < schema_changes.sql
 
       - name: pull flyway
@@ -45,7 +46,6 @@ jobs:
         env:
           DB_HOST: mysql
           DB_USER: root
-          DB_PASSWORD: Secret5555
+          DB_PASSWORD: root
         run: |
-          docker run --rm -v "${{ github.workspace }}/migrations:/flyway/sql" redgate/flyway \
-            -user=$DB_USER -password=$DB_PASSWORD -url=jdbc:mysql://$DB_HOST:3306/flyway_test migrate
+          docker run --rm -v "${{ github.workspace }}/migrations:/flyway/sql" redgate/fly
