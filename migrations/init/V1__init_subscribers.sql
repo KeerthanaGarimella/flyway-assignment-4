@@ -1,0 +1,8 @@
+CREATE DATABASE IF NOT EXISTS subscribers;
+USE subscribers;
+
+CREATE TABLE IF NOT EXISTS subscriber (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  email VARCHAR(100) UNIQUE
+);

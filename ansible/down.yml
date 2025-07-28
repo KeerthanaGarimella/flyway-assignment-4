@@ -1,0 +1,5 @@
+- name: Teardown Docker containers
+  hosts: localhost
+  tasks:
+    - name: Stop and remove all containers
+      shell: docker rm -f $(docker ps -aq) || true

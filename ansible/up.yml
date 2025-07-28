@@ -1,0 +1,5 @@
+- name: Trigger GitHub Actions via act
+  hosts: localhost
+  tasks:
+    - name: Run local GitHub workflow with act
+      shell: act -W .github/workflows/main.yml -e event.json -j flyway-job
