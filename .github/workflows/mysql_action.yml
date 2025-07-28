@@ -10,11 +10,11 @@ jobs:
     services:
       mysql:
         image: mysql:5.7
+        ports:
+          - 3306:3306
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: flyway_test
-        ports:
-          - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
@@ -28,24 +28,17 @@ jobs:
       - name: Install MySQL client
         run: sudo apt-get update && sudo apt-get install -y mysql-client
 
-      - name: Deploy to Database
-        env:
-          DB_HOST: mysql
-          DB_USER: root
-          DB_PASSWORD: root
-          DB_NAME: flyway_test
-        run: |
-          echo "Waiting for MySQL to be ready..."
-          sleep 20
-          mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < schema_changes.sql
+      - name: Wait for MySQL to be ready
+        run: sleep 20
 
-      - name: pull flyway
+      - name: Deploy to Database
+        run: |
+          mysql -h mysql -u root -proot flyway_test < schema_changes.sql
+
+      - name: Pull Flyway
         run: docker pull redgate/flyway
 
-      - name: Run migrations
-        env:
-          DB_HOST: mysql
-          DB_USER: root
-          DB_PASSWORD: root
+      - name: Run Flyway Migrations
         run: |
-          docker run --rm -v "${{ github.workspace }}/migrations:/flyway/sql" redgate/fly
+          docker run --rm -v "${{ github.workspace }}/migrations:/flyway/sql" redgate/flyway \
+            -url=jdbc:mysql://mysql:3306/flyway_test -user=root -password=root migrate
