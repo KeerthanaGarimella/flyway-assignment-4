@@ -35,7 +35,7 @@ jobs:
           DB_PASSWORD: Secret5555
           DB_NAME: flyway_test
         run: |
-          sleep 15  # wait for MySQL service to be fully ready
+          sleep 15  # Wait for MySQL service to be ready
           mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < schema_changes.sql
 
       - name: pull flyway
