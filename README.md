@@ -100,12 +100,6 @@ Ensure SQL files are not altered after being committed to avoid Flyway checksum 
 If a checksum error occurs:
 bash
 flyway repair
-🧾 Submission Info
-Q1 Answer: Included in the PDF report
-
-Repo Link: GitHub - https://github.com/KeerthanaGarimella/flyway-assignment-4
-
-README: Fulfills the reproducibility and documentation requirements
 
 📜 License
 This project is part of coursework for PROG8850 – Conestoga College. Licensed under the MIT License.
